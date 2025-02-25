@@ -1,0 +1,7 @@
+EJECUTAR UN ARCHIVO DE GO
+    go run <nombre-del-archivo.go>
+
+COMPILAR ARCHVIO PARA PRODUCCION 
+    go bulid <nombre-del-archivo.go>
+
+    
