@@ -4,4 +4,9 @@ EJECUTAR UN ARCHIVO DE GO
 COMPILAR ARCHVIO PARA PRODUCCION 
     go bulid <nombre-del-archivo.go>
 
-    
+INICIALIZAR MANEJADOR DE MODULOS
+    go mod init <nombre del modulo>
+
+PAQUETE EXTERNO: quote
+    go get <ruta del paquete>
+    go get rsc.io/quote
