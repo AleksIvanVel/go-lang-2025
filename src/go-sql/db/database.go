@@ -38,7 +38,7 @@ func Ping() {
 // Verifica si existe una tabala
 func ExistTable(tableName string) bool {
 	sql := fmt.Sprintf("SHOW TABLES LIKE '%s'", tableName)
-	rows, err := db.Query(sql)
+	rows, err := Query(sql)
 	if err != nil {
 		fmt.Println("eeror: ", err)
 	}
@@ -56,4 +56,26 @@ func CrateTable(schema string, name string) {
 			fmt.Println("Error: ", err)
 		}
 	}
+}
+
+// Polimorfismos de Exec
+func Exec(query string, args ...interface{}) (sql.Result, error) {
+	result, err := db.Exec(query, args...)
+
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
+
+	return result, err
+}
+
+// Polimorifismo de Query
+func Query(query string, args ...interface{}) (*sql.Rows, error) {
+	rows, err := db.Query(query, args...)
+
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
+
+	return rows, err
 }
