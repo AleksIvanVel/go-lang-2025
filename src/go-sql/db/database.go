@@ -79,3 +79,9 @@ func Query(query string, args ...interface{}) (*sql.Rows, error) {
 
 	return rows, err
 }
+
+// Reinicar los registro de una tabal
+func TruncateTable(tableName string) {
+	sql := fmt.Sprintf("TRUNCATE %s", tableName)
+	Exec(sql)
+}

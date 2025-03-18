@@ -9,6 +9,6 @@ func main() {
 	db.Connect()
 	fmt.Println(db.ExistTable("users"))
 	// db.CrateTable(models.UserShema, "users")
-
+	db.TruncateTable("users")
 	db.Close()
 }
