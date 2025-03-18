@@ -1,11 +1,15 @@
 package models
 
+import "gomyslq/db"
+
 type User struct {
-	Id       int
+	Id       int64
 	Username string
 	Password string
 	Email    string
 }
+
+type Users []User
 
 const UserShema string = `CREATE TABLE users(
 	id INT(6) UNSIGNEd AUTO_INCREMENT PRIMARY KEY,
@@ -14,3 +18,53 @@ const UserShema string = `CREATE TABLE users(
 	email VARCHAR(50),
 	create_data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`
+
+// Construir usuario
+func NewUser(username, password, email string) *User {
+	user := &User{
+		Username: username,
+		Password: password,
+		Email:    email,
+	}
+
+	return user
+}
+
+// Crear e insertat usuario en db
+func CreateUser(username, password, email string) *User {
+	user := NewUser(username, password, email)
+	user.insert()
+
+	return user
+}
+
+// Inserta un registro en la db
+func (user *User) insert() {
+	sql := "INSERT users SET username=?, password=?, email=?"
+	result, _ := db.Exec(sql, user.Username, user.Password, user.Email)
+
+	user.Id, _ = result.LastInsertId()
+}
+
+// Listar registros
+func ListUsers() Users {
+	//Crea la consulta
+	sql := "SELECT id, username, password, email FROM users"
+
+	//Incializamos una lista que contendra los usuarios
+	users := Users{}
+
+	//guarda el resultado de la consulta
+	rows, _ := db.Query(sql)
+
+	// recorre el resultado de la consulta
+	for rows.Next() {
+		//COnvierte el resultado en un objeto de tipo Usuer
+		user := User{}
+		rows.Scan(&user.Id, &user.Username, &user.Password, &user.Email)
+
+		// Guarda el objeto de tipo User en la lista Users
+		users = append(users, user)
+	}
+	return users
+}
