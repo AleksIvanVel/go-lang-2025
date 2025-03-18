@@ -17,6 +17,12 @@ func main() {
 
 	user := models.GetUser(2)
 	fmt.Println(user)
+	user.Username = "juan"
+	user.Password = "juan789"
+	user.Email = "juan@example.com"
+	user.Save()
+
+	fmt.Println(models.ListUsers())
 
 	db.Close()
 }
