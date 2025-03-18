@@ -15,8 +15,8 @@ func main() {
 	// db.CrateTable(models.UserShema, "users")
 	// db.TruncateTable("users")
 
-	users := models.ListUsers()
-	fmt.Println(users)
+	user := models.GetUser(2)
+	fmt.Println(user)
 
 	db.Close()
 }
