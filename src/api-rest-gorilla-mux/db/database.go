@@ -13,7 +13,7 @@ const url = "root:123456@tcp(localhost:3306)/goweb_db"
 // Guarda la conexion
 var db *sql.DB
 
-// Abre la conexio
+// Abre la conexion
 func Connect() {
 	connection, err := sql.Open("mysql", url)
 	if err != nil {
@@ -60,7 +60,13 @@ func CrateTable(schema string, name string) {
 
 // Polimorfismos de Exec
 func Exec(query string, args ...interface{}) (sql.Result, error) {
+	//Abre la conexion a la base
+	Connect()
+
 	result, err := db.Exec(query, args...)
+
+	//Cierra la conexion a la base
+	Close()
 
 	if err != nil {
 		fmt.Println("Error: ", err)
@@ -71,7 +77,12 @@ func Exec(query string, args ...interface{}) (sql.Result, error) {
 
 // Polimorifismo de Query
 func Query(query string, args ...interface{}) (*sql.Rows, error) {
+	//Abre la conexion a la base
+	Connect()
+
 	rows, err := db.Query(query, args...)
+
+	Close()
 
 	if err != nil {
 		fmt.Println("Error: ", err)

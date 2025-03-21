@@ -3,10 +3,10 @@ package models
 import "apirest-gorillamux/db"
 
 type User struct {
-	Id       int64
-	Username string
-	Password string
-	Email    string
+	Id       int64  `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"passsword"`
+	Email    string `json:"email"`
 }
 
 type Users []User
@@ -47,7 +47,7 @@ func (user *User) insert() {
 }
 
 // Listar registros
-func ListUsers() Users {
+func ListUsers() (Users, error) {
 	//Crea la consulta
 	sql := "SELECT id, username, password, email FROM users"
 
@@ -55,7 +55,7 @@ func ListUsers() Users {
 	users := Users{}
 
 	//guarda el resultado de la consulta
-	rows, _ := db.Query(sql)
+	rows, err := db.Query(sql)
 
 	// recorre el resultado de la consulta
 	for rows.Next() {
@@ -66,21 +66,24 @@ func ListUsers() Users {
 		// Guarda el objeto de tipo User en la lista Users
 		users = append(users, user)
 	}
-	return users
+	return users, err
 }
 
 // Obtener un registro
-func GetUser(id int) *User {
+func GetUser(id int) (*User, error) {
 	user := NewUser("", "", "")
 
 	sql := "SELECT id, username, password, email FROM users WHERE id=?"
 
-	rows, _ := db.Query(sql, id)
-
-	for rows.Next() {
-		rows.Scan(&user.Id, &user.Username, &user.Password, &user.Email)
+	if rows, err := db.Query(sql, id); err != nil {
+		return nil, err
+	} else {
+		for rows.Next() {
+			rows.Scan(&user.Id, &user.Username, &user.Password, &user.Email)
+		}
 	}
-	return user
+
+	return user, nil
 }
 
 // Actualizar un registro
